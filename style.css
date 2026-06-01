@@ -2910,3 +2910,25 @@ footer{
     }
 
 }
+
+.status-item{
+
+    padding:12px;
+
+    margin:10px 0;
+
+    border-radius:10px;
+
+    background:#eeeeee;
+
+    font-weight:600;
+
+    transition:0.4s;
+}
+
+.status-item.active{
+
+    background:#4caf50;
+
+    color:white;
+}

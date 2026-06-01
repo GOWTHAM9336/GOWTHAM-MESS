@@ -708,3 +708,47 @@ function searchMenu(){
     });
 
 }
+
+function showTracking(){
+
+    document.getElementById(
+        "trackingPopup"
+    ).style.display = "flex";
+
+}
+
+function startTracking(){
+
+    document.getElementById("track2")
+    .classList.remove("active");
+
+    document.getElementById("track3")
+    .classList.remove("active");
+
+    document.getElementById("track4")
+    .classList.remove("active");
+
+    setTimeout(function(){
+
+        document.getElementById("track2")
+        .classList.add("active");
+
+    },3000);
+
+    setTimeout(function(){
+
+        document.getElementById("track3")
+        .classList.add("active");
+
+    },6000);
+
+    setTimeout(function(){
+
+        document.getElementById("track4")
+        .classList.add("active");
+
+        alert("🎉 Order Delivered");
+
+    },9000);
+
+}

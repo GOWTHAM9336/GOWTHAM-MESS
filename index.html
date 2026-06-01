@@ -441,21 +441,28 @@
 <div id="order-menu" class="order-menu">
 
     <div class="menu-header">
-
         <h2>☰ Order Menu</h2>
-     </div>
+    </div>
 
-     <div onclick="showOrderDetails()">
+    <div onclick="showOrderDetails()">
         📦 Order Details
+    </div>
+
+     <div onclick="showTracking()">
+        🛵 Order Tracking
     </div>
 
     <div onclick="showDeliveryStatus()">
         🚚 Delivery Status
     </div>
 
+
     <div onclick="showPaymentDetails()">
         💳 Payment Details
     </div>
+
+   
+
 </div>
 
 <div id="orderDetailsPopup" class="popup-box">
@@ -484,6 +491,46 @@
         </p>
 
         <button onclick="closePopup('orderDetailsPopup')">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ORDER TRACKING POPUP -->
+
+<div id="trackingPopup" class="popup-box">
+
+    <div class="popup-content">
+
+        <h2>🛵 Order Tracking</h2>
+
+        <div class="delivery-status">
+
+            <div class="status-item active">
+                ✅ Order Confirmed
+            </div>
+
+            <div class="status-item" id="track2">
+                👨‍🍳 Preparing Food
+            </div>
+
+            <div class="status-item" id="track3">
+                🚚 Out For Delivery
+            </div>
+
+            <div class="status-item" id="track4">
+                🎉 Delivered
+            </div>
+
+        </div>
+
+        <button onclick="startTracking()">
+            Start Tracking
+        </button>
+
+        <button onclick="closePopup('trackingPopup')">
             Close
         </button>
 
