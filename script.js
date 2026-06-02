@@ -263,6 +263,11 @@ function scrollMenu(){
 
 function sendEmail(){
 
+    if (cart.length === 0) {
+    alert("Cart is Empty!");
+    return;
+}
+
     let customerName = document.getElementById("name").value;
 
     let email = prompt("Enter Email Address");
@@ -754,6 +759,11 @@ function startTracking(){
 }
 
 function confirmOrder() {
+
+    if (cart.length === 0) {
+    alert("🛒 Cart is Empty! Please add items.");
+    return;
+}
 
     let customerName =
     document.getElementById("name").value;
