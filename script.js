@@ -777,6 +777,16 @@ function confirmOrder() {
     let address =
     document.getElementById("address").value;
 
+    if (
+    customerName === "" ||
+    phone === "" ||
+    email === "" ||
+    address === ""
+) {
+    alert("🚚 Delivery Details are mandatory. Please fill all details.");
+    return;
+}
+
     let orderTime =
     new Date().toLocaleString("en-IN", {
         dateStyle: "short",
