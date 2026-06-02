@@ -752,3 +752,82 @@ function startTracking(){
     },9000);
 
 }
+
+function confirmOrder() {
+
+    let customerName =
+    document.getElementById("name").value;
+
+    let phone =
+    document.getElementById("phone").value;
+
+    let email =
+    document.getElementById("user_email").value;
+
+    let address =
+    document.getElementById("address").value;
+
+    let orderTime =
+    new Date().toLocaleString("en-IN", {
+        dateStyle: "short",
+        timeStyle: "medium"
+    });
+
+    let payment =
+    document.querySelector(
+        'input[name="payment"]:checked'
+    );
+
+    let paymentMethod =
+    payment ? payment.value : "Cash";
+
+    let paymentStatus = "Paid ✅";
+
+    let orderItems = "";
+
+    cart.forEach(item => {
+        orderItems +=
+        `${item.item} - ₹${item.price}\n`;
+    });
+
+    emailjs.send(
+        "gowtham_mess",
+        "template_y0au8ao",
+        {
+            name: customerName,
+            phone: phone,
+            email: email,
+            address: address,
+            time: orderTime,
+            payment_method: paymentMethod,
+            payment_status: paymentStatus,
+            items: orderItems,
+            total: total
+        }
+    )
+
+    .then(function(response){
+
+        alert("Order Sent Successfully!");
+
+        document.getElementById(
+            "success-user"
+        ).innerText =
+        `Thank You ${customerName}`;
+
+        document.getElementById(
+            "order-success-popup"
+        ).style.display = "flex";
+
+    })
+
+    .catch(function(error){
+
+        console.log(error);
+
+        alert("Email Failed");
+
+    });
+
+}
+

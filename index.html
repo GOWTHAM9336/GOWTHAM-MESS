@@ -334,15 +334,34 @@
 
 <!-- DELIVERY -->
 
+<!-- DELIVERY -->
+
 <section class="delivery">
 
     <h2>Delivery Details</h2>
 
     <form onsubmit="placeOrder(event)">
 
-        <input type="text" id="name" placeholder="Enter Name" required>
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter Name"
+            required
+        >
 
-        <input type="text" id="phone" placeholder="Mobile Number" required>
+        <input
+            type="text"
+            id="phone"
+            placeholder="Mobile Number"
+            required
+        >
+
+        <input
+            type="email"
+            id="user_email"
+            placeholder="Enter Email ID"
+            required
+        >
 
         <select id="deliveryType">
 
@@ -351,10 +370,14 @@
 
         </select>
 
-        <textarea id="address" placeholder="Enter Address or Table Number"></textarea>
+        <textarea
+            id="address"
+            placeholder="Enter Address or Table Number"
+        ></textarea>
 
-        <button type="submit">Save Delivery Details
-</button>
+        <button type="submit">
+            Save Delivery Details
+        </button>
 
     </form>
 
@@ -838,6 +861,12 @@ class="order-success-popup">
     </div>
 
 </div> 
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init("DXxPS-NccPFSNP0ZB");
+</script>
 
 <script src="script.js"></script>
 
