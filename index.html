@@ -621,27 +621,23 @@ Close
 </div>
 
 
-    <!-- QR CODE -->
-
     <div id="qr-box" class="qr-box">
 
-        <!-- CHANGE pay.jpeg -->
+    <div id="qrcode"></div>
 
-        <img src="pay.jpeg" alt="QR Code">
+    <h2 class="qr-total">
+        Pay ₹<span id="qr-amount">0</span>
+    </h2>
 
-        <h2 class="qr-total">
+    <p>📱 Scan & Pay</p>
 
-            Pay ₹<span id="qr-amount">0</span>
-
-        </h2>
-
-        <p>
-            Scan & Pay
-        </p>
-
-        <input type="text"
+    <input
+        type="text"
         id="transaction-id"
-        placeholder="Enter Transaction ID">
+        placeholder="Enter Transaction ID"
+    >
+
+</div>
 
         <!-- DIRECT PAYMENT APPS -->
 
@@ -693,12 +689,6 @@ Close
 
     </p>
 
-        </div>
-
-    </div>
-
-</div>
-
     <h3>Total ₹<span id="total">0</span></h3>
 
     <button onclick="showBill()" class="bill-btn">
@@ -718,6 +708,14 @@ Close
     Confirm Your Order
 
 </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
 
 </div>
 
@@ -868,6 +866,7 @@ class="order-success-popup">
 </div> 
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
 emailjs.init("DXxPS-NccPFSNP0ZB");

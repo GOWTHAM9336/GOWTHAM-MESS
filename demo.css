@@ -2975,3 +2975,21 @@ footer{
 
     border-radius:35px;
 }
+
+#qrcode{
+    display:flex;
+    justify-content:center;
+    margin:20px auto;
+}
+
+#qrcode img,
+#qrcode canvas{
+    background:white;
+    padding:10px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+#qr-box{
+    display:none;
+}

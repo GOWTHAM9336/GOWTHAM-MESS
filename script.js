@@ -47,21 +47,15 @@ function updateCart(){
             <div class="cart-buttons">
 
                 <button onclick="increaseQty(${index})">
-
                     +
-
                 </button>
 
                 <button onclick="decreaseQty(${index})">
-
                     -
-
                 </button>
 
                 <button onclick="removeItem(${index})">
-
                     🗑
-
                 </button>
 
             </div>
@@ -74,11 +68,31 @@ function updateCart(){
 
     });
 
-    document.getElementById("total")
-    .innerText = total;
+    document.getElementById("total").innerText = total;
 
-    document.getElementById("cart-count")
-    .innerText = cart.length;
+    document.getElementById("cart-count").innerText = cart.length;
+
+    // QR Amount Auto Update
+    let qrBox = document.getElementById("qr-box");
+
+    if(qrBox && qrBox.style.display === "block"){
+
+        document.getElementById("qr-amount").innerText = total;
+
+        document.getElementById("qrcode").innerHTML = "";
+
+        let upiLink =
+        `upi://pay?pa=9080149926@paytm&pn=GOWTHAM MESS&am=${total}&cu=INR`;
+
+        new QRCode(
+            document.getElementById("qrcode"),
+            {
+                text: upiLink,
+                width: 250,
+                height: 250
+            }
+        );
+    }
 
 }
 
@@ -850,4 +864,37 @@ function confirmOrder() {
     });
 
 }
+function showQR() {
 
+    let qrBox = document.getElementById("qr-box");
+
+    // Toggle QR Show/Hide
+    if (qrBox.style.display === "block") {
+
+        qrBox.style.display = "none";
+        return;
+
+    }
+
+    qrBox.style.display = "block";
+
+    // Show cart total
+    document.getElementById("qr-amount").innerText = total;
+
+    // Clear old QR
+    document.getElementById("qrcode").innerHTML = "";
+
+    // Your UPI ID
+    let upiLink =
+    `upi://pay?pa=9080149926@paytm&pn=GOWTHAM MESS&am=${total}&cu=INR`;
+
+    // Generate QR
+    new QRCode(
+        document.getElementById("qrcode"),
+        {
+            text: upiLink,
+            width: 250,
+            height: 250
+        }
+    );
+}
