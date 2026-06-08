@@ -540,7 +540,7 @@ function payWithPaytm(){
     }
 
     window.location.href =
-    `paytmmp://pay?pa=9080149926@ptsbi=GowthamMess&am=${total}&cu=INR`;
+    `paytmmp://pay?pa=9080149926@ptsbi&pn=GowthamMess&am=${total}&cu=INR`;
 }
 
 function payWithGpay(){
@@ -551,7 +551,7 @@ function payWithGpay(){
     }
 
     window.location.href =
-    `tez://upi/pay?pa=m.gowthammanimalan8383@oksbi=GowthamMess&am=${total}&cu=INR`;
+    `tez://upi/pay?pa=m.gowthammanimalan8383@oksbi&pn=GowthamMess&am=${total}&cu=INR`;
 }
 
 function payWithPhonepe(){
