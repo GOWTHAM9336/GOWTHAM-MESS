@@ -162,8 +162,12 @@ function showBill(){
 
     let today = new Date();
 
-    document.getElementById("bill-date").innerText =
-    today.toLocaleDateString();
+let day = String(today.getDate()).padStart(2, '0');
+let month = String(today.getMonth() + 1).padStart(2, '0');
+let year = today.getFullYear();
+
+document.getElementById("bill-date").innerText =
+`${day}/${month}/${year}`;
 
     let billItems =
     document.getElementById("bill-items");
@@ -530,27 +534,35 @@ function decreaseQty(index){
 
 function payWithPaytm(){
 
+    if(total <= 0){
+        alert("Please add items to cart first.");
+        return;
+    }
+
     window.location.href =
-    `paytmmp://pay?pa=9080149926@paytm&pn=GowthamMess&am=${total}&cu=INR`;
-
+    `paytmmp://pay?pa=9080149926@ptsbi=GowthamMess&am=${total}&cu=INR`;
 }
-
-/* GPAY */
 
 function payWithGpay(){
 
+    if(total <= 0){
+        alert("Please add items to cart first.");
+        return;
+    }
+
     window.location.href =
-    `tez://upi/pay?pa=9080149926@okaxis&pn=GowthamMess&am=${total}&cu=INR`;
-
+    `tez://upi/pay?pa=m.gowthammanimalan8383@oksbi=GowthamMess&am=${total}&cu=INR`;
 }
-
-/* PHONEPE */
 
 function payWithPhonepe(){
 
+    if(total <= 0){
+        alert("Please add items to cart first.");
+        return;
+    }
+
     window.location.href =
     `phonepe://pay?pa=9080149926@ybl&pn=GowthamMess&am=${total}&cu=INR`;
-
 }
 
 function showMenu(category){
