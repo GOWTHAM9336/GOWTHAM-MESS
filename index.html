@@ -72,17 +72,19 @@
 
 </button>
 
+ <button onclick="toggleCart()" class="cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+        </button>
+
+        
+
 <button onclick="logoutUser()" class="logout-btn">
 
     <i class="fas fa-sign-out-alt"></i>
 
 </button>
 
-
-        <button onclick="toggleCart()" class="cart-btn">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="cart-count">0</span>
-        </button>
 
     </div>
 
@@ -682,6 +684,11 @@ Close
                 PhonePe
 
             </button>
+-------
+            <button onclick="payNow()" class="pay-btn">
+    🔒 Pay Online
+</button>
+--------
 
             <p class="payment-subtitle">
 
@@ -867,7 +874,7 @@ class="order-success-popup">
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 emailjs.init("DXxPS-NccPFSNP0ZB");
 </script>

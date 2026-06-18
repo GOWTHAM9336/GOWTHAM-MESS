@@ -910,3 +910,72 @@ function showQR() {
         }
     );
 }
+
+function payNow(){
+
+    if(total <= 0){
+
+        alert("🛒 Please add items to cart first");
+        return;
+    }
+
+    let options = {
+
+        key: "rzp_test_T39CMtSR9stfJQ",
+
+        amount: total * 100,
+
+        currency: "INR",
+
+        name: "GOWTHAM MESS",
+
+        description: "Food Order Payment",
+
+        image: "logo.jpeg",
+
+        handler: function(response){
+
+            let paymentId =
+            response.razorpay_payment_id;
+
+            let tx =
+            document.getElementById("transaction-id");
+
+            if(tx){
+                tx.value = paymentId;
+            }
+
+            alert(
+                "✅ Payment Successful\n\nTransaction ID:\n" +
+                paymentId
+            );
+
+        },
+
+        prefill: {
+
+            name:
+            document.getElementById("name").value,
+
+            contact:
+            document.getElementById("phone").value,
+
+            email:
+            document.getElementById("email") ?
+            document.getElementById("email").value :
+            ""
+
+        },
+
+        theme: {
+            color: "#28a745"
+        }
+
+    };
+
+    let rzp =
+    new Razorpay(options);
+
+    rzp.open();
+
+}
