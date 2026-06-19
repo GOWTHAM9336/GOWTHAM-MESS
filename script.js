@@ -921,7 +921,7 @@ function payNow(){
 
     let options = {
 
-        key: "f5dc2YqoQQNzHAb0l2AT2oHb",
+        key: "rzp_test_T39CMtSR9stfJQ",
 
         amount: total * 100,
 
