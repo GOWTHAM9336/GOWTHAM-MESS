@@ -438,15 +438,15 @@
 
         <!-- CARD -->
 
-       <label class="payment-card">
-    <input
-        type="radio"
-        name="payment"
-        value="Online"
-        onclick="payNow()"
-    >
-    💳 Card
-</label>
+        <label class="payment-card">
+
+            <input type="radio"
+            name="payment"
+            value="Card">
+
+            💳 Card
+
+        </label>
 
         <!-- QR PAYMENT -->
 
@@ -684,7 +684,9 @@ Close
                 PhonePe
 
             </button>
-            
+            <button onclick="payNow()" class="pay-btn">
+    🔒 Pay Online
+</button>
 
             <p class="payment-subtitle">
 
