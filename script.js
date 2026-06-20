@@ -931,7 +931,7 @@ function payNow(){
 
         description: "Food Order Payment",
 
-        image: "png.jpeg",
+        image: "pay.png",
 
         handler: function(response){
 
