@@ -911,162 +911,71 @@ function showQR() {
     );
 }
 
-async function payNow() {
+function payNow(){
 
-    if (total <= 0) {
-        alert("🛒 Cart is Empty");
+    if(total <= 0){
+
+        alert("🛒 Please add items to cart first");
         return;
     }
 
-    console.log("Pay button clicked");
-    console.log("Total:", total);
+    let options = {
 
-    try {
+        key: "rzp_live_T3sOsI8bfwt0vI",
 
-        const response = await fetch(
-            "http://localhost:5000/api/create-order",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    amount: total * 100
-                })
+        amount: total * 100,
+
+        currency: "INR",
+
+        name: "GOWTHAM MESS",
+
+        description: "Food Order Payment",
+
+        image: "png.jpeg",
+
+        handler: function(response){
+
+            let paymentId =
+            response.razorpay_payment_id;
+
+            let tx =
+            document.getElementById("transaction-id");
+
+            if(tx){
+                tx.value = paymentId;
             }
-        );
 
-        const order = await response.json();
+            alert(
+                "✅ Payment Successful\n\nTransaction ID:\n" +
+                paymentId
+            );
 
-        console.log("Order Response:", order);
+        },
 
-        if (!order.success) {
-            alert(order.message || "Order creation failed");
-            return;
+        prefill: {
+
+            name:
+            document.getElementById("name").value,
+
+            contact:
+            document.getElementById("phone").value,
+
+            email:
+            document.getElementById("email") ?
+            document.getElementById("email").value :
+            ""
+
+        },
+
+        theme: {
+            color: "#28a745"
         }
 
-        const options = {
+    };
 
-            key: "rzp_live_T3sOsI8bfwt0vI",
+    let rzp =
+    new Razorpay(options);
 
-            amount: order.amount,
-
-            currency: order.currency,
-
-            name: "GOWTHAM MESS",
-
-            description: "Food Order Payment",
-
-            image: "logo.jpeg",
-
-            order_id: order.order_id,
-
-            prefill: {
-
-                name:
-                document.getElementById("name").value,
-
-                contact:
-                document.getElementById("phone").value
-
-            },
-
-            theme: {
-                color: "#4CAF50"
-            },
-
-            handler: async function (response) {
-
-                console.log(response);
-
-                const verifyResponse =
-                await fetch(
-                    "http://localhost:5000/api/verify-payment",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            razorpay_order_id:
-                            response.razorpay_order_id,
-
-                            razorpay_payment_id:
-                            response.razorpay_payment_id,
-
-                            razorpay_signature:
-                            response.razorpay_signature
-                        })
-                    }
-                );
-
-                const result =
-                await verifyResponse.json();
-
-                console.log(result);
-
-                if(result.success){
-
-                    document.getElementById(
-                        "transaction-id"
-                    ).value =
-                    response.razorpay_payment_id;
-
-                    alert(
-                        "✅ Payment Successful\n\n" +
-                        response.razorpay_payment_id
-                    );
-
-                }else{
-
-                    alert(
-                        "❌ Payment Verification Failed"
-                    );
-                }
-
-            },
-
-            modal: {
-
-                ondismiss: function(){
-
-                    alert(
-                        "Payment Cancelled"
-                    );
-
-                }
-
-            }
-
-        };
-
-        const rzp =
-        new Razorpay(options);
-
-        rzp.on(
-            "payment.failed",
-            function(response){
-
-                console.log(response);
-
-                alert(
-                    "Payment Failed\n\n" +
-                    response.error.description
-                );
-
-            }
-        );
-
-        rzp.open();
-
-    } catch(error){
-
-        console.error(error);
-
-        alert(
-            "Unable to connect to payment server"
-        );
-
-    }
+    rzp.open();
 
 }
