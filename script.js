@@ -947,7 +947,7 @@ async function payNow() {
 
         const options = {
 
-            key: "rzp_test_T3oUST2Jn1xipq",
+            key: "rzp_live_T3sOsI8bfwt0vI",
 
             amount: order.amount,
 
