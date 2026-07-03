@@ -267,7 +267,7 @@ function placeOrder(event){
 
     const name = document.getElementById("name").value;
 
-    alert("Thank You " + name + " Your Order is Confirmed");
+    alert("Thank You " + name + " save your delivery details");
 
 }
 
