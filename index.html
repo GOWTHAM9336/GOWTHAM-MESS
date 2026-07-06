@@ -209,11 +209,33 @@
 
         <div class="menu-grid">
 
-            <div class="card">
-                <h4>Idly</h4>
-                <p>₹30</p>
-                <button onclick="addToCart('Idly',30)">Add</button>
-            </div>
+           <div class="card">
+
+    <img src="idly.jpg"Idly" class="food-img">
+
+    <h4>Idly</h4>
+
+    <p class="price">₹30</p>
+
+    <div class="card-actions">
+
+        <button class="fav-btn">
+            ❤
+        </button>
+
+        <div class="qty-box">
+
+            <button onclick="decreaseQtyByName('Idly',30)">−</button>
+
+            <span id="qty-Idly">0</span>
+
+            <button onclick="increaseQtyByName('Idly',30)">+</button>
+
+        </div>
+
+    </div>
+
+</div>
 
             <div class="card">
                 <h4>Dosa</h4>
@@ -743,16 +765,15 @@ Close
     <p>Traditional South Indian Foods</p>
 
 </div>
+<div class="bill-details">
 
-        <div class="bill-details">
+    <p><b>Order No:</b> <span id="bill-order-no"></span></p>
 
-            <p><b>Bill No:</b> 101</p>
+    <p><b>Date:</b> <span id="bill-date"></span></p>
 
-            <p><b>Date:</b> <span id="bill-date"></span></p>
+    <p><b>Customer:</b> <span id="bill-customer"></span></p>
 
-            <p><b>Customer:</b> <span id="bill-customer"></span></p>
-
-        </div>
+</div>
 
         <table class="bill-table">
 

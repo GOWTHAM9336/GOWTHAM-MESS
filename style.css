@@ -2996,3 +2996,72 @@ footer{
     left:100%;
 
 }
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+.food-img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+    border-radius:15px;
+    margin-bottom:10px;
+}
+
+.price{
+    color:#ff4d00;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.card-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+}
+
+.fav-btn{
+  
+    height:48px;
+    border:1px solid #ddd;
+    background:#fff;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:22px;
+}
+
+.qty-box{
+    display:flex;
+    align-items:center;
+    background:#ff5a1f;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.qty-box button{
+    width:45px;
+    height:45px;
+    border:none;
+    background:#ff5a1f;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.qty-box span{
+    width:45px;
+    height:45px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    color:#ff5a1f;
+    font-size:22px;
+    font-weight:bold;
+}

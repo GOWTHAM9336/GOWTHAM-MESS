@@ -159,6 +159,7 @@ function showBill(){
 
     document.getElementById("bill-customer").innerText =
     customerName;
+    document.getElementById("bill-order-no").textContent = generateOrderNumber();
 
     let today = new Date();
 
@@ -978,4 +979,61 @@ function payNow(){
 
     rzp.open();
 
+}
+
+function generateOrderNumber() {
+
+    const today = new Date().toISOString().split("T")[0];
+
+    let savedDate = localStorage.getItem("orderDate");
+    let orderNo = parseInt(localStorage.getItem("orderNo")) || 0;
+
+    if (savedDate !== today) {
+        orderNo = 0;
+        localStorage.setItem("orderDate", today);
+    }
+
+    orderNo++;
+
+    localStorage.setItem("orderNo", orderNo);
+
+    return String(orderNo).padStart(3, "0");
+}
+
+let quantities = {};
+
+function increaseQtyByName(name, price){
+
+    if(!quantities[name]){
+        quantities[name] = 0;
+    }
+
+    quantities[name]++;
+
+    addToCart(name, price);
+
+    document.getElementById("qty-"+name).innerText =
+    quantities[name];
+}
+
+function decreaseQtyByName(name, price){
+
+    if(!quantities[name] || quantities[name] <= 0){
+        return;
+    }
+
+    quantities[name]--;
+
+    let index = cart.findIndex(item => item.item === name);
+
+    if(index !== -1){
+
+        cart.splice(index,1);
+
+        updateCart();
+
+    }
+
+    document.getElementById("qty-"+name).innerText =
+    quantities[name];
 }
