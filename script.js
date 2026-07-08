@@ -332,42 +332,7 @@ function closeBill(){
 
 
 
-function loginUser(){
 
-    let username =
-    document.getElementById("username").value;
-
-    let password =
-    document.getElementById("password").value;
-
-    if(username === "" || password === ""){
-
-        alert("Enter Details");
-
-        return;
-    }
-
-    localStorage.setItem(
-        "gowthamUser",
-        username
-    );
-
-    localStorage.setItem(
-        "gowthamPass",
-        password
-    );
-
-    document.getElementById("user-name")
-    .innerText = username;
-
-    document.getElementById("login-popup")
-    .style.display = "none";
-
-    document.getElementById("floating-icons").style.display = "flex";
-
-    alert("Login Success");
-
-}
 
 /* LOGOUT FUNCTION */
 
@@ -615,26 +580,7 @@ function showMenu(menuId){
 
 }
 
-window.onload = function(){
 
-    // Hide all menus
-    document.querySelectorAll(".menu-box").forEach(menu => {
-        menu.style.display = "none";
-    });
-
-    // Check saved login
-    let savedUser = localStorage.getItem("gowthamUser");
-
-    if(savedUser){
-
-        document.getElementById("login-popup").style.display = "none";
-
-        document.getElementById("user-name").innerText = savedUser;
-
-        // Show floating buttons
-        document.getElementById("floating-icons").style.display = "flex";
-    }
-}
 function toggleOrderMenu(){
 
     const menu = document.getElementById("order-menu");
@@ -1037,3 +983,212 @@ function decreaseQtyByName(name, price){
     document.getElementById("qty-"+name).innerText =
     quantities[name];
 }
+/* ---------------- LOGIN TAB ---------------- */
+
+function showLogin(){
+
+    document.getElementById("login-form").style.display = "block";
+    document.getElementById("signup-form").style.display = "none";
+
+    document.getElementById("login-error").innerHTML = "";
+
+}
+
+/* ---------------- SIGNUP TAB ---------------- */
+
+function showSignup(){
+
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("signup-form").style.display = "block";
+
+    document.getElementById("signup-error").innerHTML = "";
+
+}
+
+/* ---------------- SHOW / HIDE PASSWORD ---------------- */
+
+function togglePassword(id,icon){
+
+    let input = document.getElementById(id);
+
+    if(input.type==="password"){
+
+        input.type="text";
+        icon.innerHTML="🙈";
+
+    }else{
+
+        input.type="password";
+        icon.innerHTML="👁️";
+
+    }
+
+}
+
+/* ---------------- SIGN UP ---------------- */
+function signupUser(){
+
+    let name = document.getElementById("signup-fullname").value.trim();
+    let email = document.getElementById("signup-email").value.trim();
+    let phone = document.getElementById("signup-phone").value.trim();
+    let password = document.getElementById("signup-password").value;
+    let confirm = document.getElementById("signup-confirm-password").value;
+
+    if(name==="" || email==="" || phone==="" || password==="" || confirm===""){
+
+        document.getElementById("signup-error").innerText =
+        "Please fill all fields.";
+
+        return;
+    }
+
+    if(password !== confirm){
+
+        document.getElementById("signup-error").innerText =
+        "Passwords do not match.";
+
+        return;
+    }
+
+    // Save account
+    localStorage.setItem("fullname", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
+    localStorage.setItem("password", password);
+
+    // User is NOT logged in yet
+    localStorage.removeItem("isLoggedIn");
+
+    alert("Account Created Successfully.\nPlease Login.");
+
+    // Clear signup fields
+    document.getElementById("signup-fullname").value = "";
+    document.getElementById("signup-email").value = "";
+    document.getElementById("signup-phone").value = "";
+    document.getElementById("signup-password").value = "";
+    document.getElementById("signup-confirm-password").value = "";
+
+    document.getElementById("signup-error").innerText = "";
+
+    // Open Login Form
+    showLogin();
+}
+/* ---------------- LOGIN ---------------- */
+
+function loginUser(){
+
+    let email =
+    document.getElementById("login-identifier").value.trim();
+
+    let password =
+    document.getElementById("login-password").value;
+
+    if(
+
+        email===localStorage.getItem("email") &&
+        password===localStorage.getItem("password")
+
+    ){
+
+        localStorage.setItem("isLoggedIn","true");
+
+        document.getElementById("login-popup").style.display="none";
+
+        let user =
+        document.getElementById("user-name");
+
+        if(user){
+
+            user.innerText=
+            localStorage.getItem("fullname");
+
+        }
+
+        let icons =
+        document.getElementById("floating-icons");
+
+        if(icons){
+
+            icons.style.display="flex";
+
+        }
+
+        alert(
+            "Welcome " +
+            localStorage.getItem("fullname")
+        );
+
+    }
+
+    else{
+
+        document.getElementById("login-error").innerHTML =
+        "Invalid Email or Password.";
+
+    }
+
+}
+
+/* ---------------- LOGOUT ---------------- */
+
+function logoutUser(){
+
+    localStorage.removeItem("isLoggedIn");
+
+    alert("Logged Out Successfully");
+
+    location.reload();
+
+}
+
+/* ---------------- AUTO LOGIN ---------------- */
+
+window.onload = function(){
+
+    if(localStorage.getItem("isLoggedIn")==="true"){
+
+        let popup =
+        document.getElementById("login-popup");
+
+        if(popup){
+
+            popup.style.display="none";
+
+        }
+
+        let user =
+        document.getElementById("user-name");
+
+        if(user){
+
+            user.innerText=
+            localStorage.getItem("fullname");
+
+        }
+
+        let icons =
+        document.getElementById("floating-icons");
+
+        if(icons){
+
+            icons.style.display="flex";
+
+        }
+
+    }
+
+    else{
+
+        let popup =
+        document.getElementById("login-popup");
+
+        if(popup){
+
+            popup.style.display="flex";
+
+        }
+
+    }
+
+};
+

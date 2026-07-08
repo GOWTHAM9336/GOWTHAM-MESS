@@ -19,32 +19,98 @@
 
 <div id="login-popup" class="login-popup">
 
-    <div class="login-box">
+     <div class="login-box">
 
-        <h1>🍴 Gowtham Mess</h1>
+        <h1>🍴 GOWTHAM MESS</h1>
 
-        <p>Welcome Back</p>
+        <div class="tabs">
 
-        <input type="text"
-        id="username"
-        placeholder="Enter Your Name">
+            <button onclick="showLogin()">Login</button>
 
-        <input type="password"
-        id="password"
-        placeholder="Create Password">
+            <button onclick="showSignup()">Sign Up</button>
 
-        <button onclick="loginUser()">
-            Login / Sign Up
-        </button>
+        </div>
+
+        <!-- LOGIN -->
+
+        <div id="login-form" class="auth-form">
+
+            <p>Welcome Back</p>
+
+            <input type="email"
+            id="login-identifier"
+            placeholder="Email Address">
+
+            <div class="password-box">
+
+                <input type="password"
+                id="login-password"
+                placeholder="Password">
+
+                <span onclick="togglePassword('login-password',this)">👁</span>
+
+            </div>
+
+            <div id="login-error" class="auth-error"></div>
+
+            <button onclick="loginUser()">Login</button>
+
+        </div>
+
+        <!-- SIGNUP -->
+
+        <div id="signup-form"
+        class="auth-form"
+        style="display:none;">
+
+            <p>Create Your Account</p>
+
+            <input type="text"
+            id="signup-fullname"
+            placeholder="Full Name">
+
+            <input type="email"
+            id="signup-email"
+            placeholder="Email Address">
+
+            <input type="tel"
+            id="signup-phone"
+            placeholder="Phone Number">
+
+            <div class="password-box">
+
+                <input type="password"
+                id="signup-password"
+                placeholder="Password">
+
+                <span onclick="togglePassword('signup-password',this)">👁</span>
+
+            </div>
+
+            <div class="password-box">
+
+                <input type="password"
+                id="signup-confirm-password"
+                placeholder="Confirm Password">
+
+                <span onclick="togglePassword('signup-confirm-password',this)">👁</span>
+
+            </div>
+
+            <div id="signup-error" class="auth-error"></div>
+
+            <button onclick="signupUser()">Create Account</button>
+
+        </div>
 
     </div>
-
     <div class="floating-food food1">🍕</div>
 <div class="floating-food food2">🍔</div>
 <div class="floating-food food3">🍜</div>
 <div class="floating-food food4">🍹</div>
 
 </div>
+
 
 <!-- NAVBAR -->
 

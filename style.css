@@ -3060,3 +3060,85 @@ footer{
     font-size:22px;
     font-weight:bold;
 }
+
+
+
+
+.login-box h1{
+    margin-bottom:20px;
+
+}
+
+.tabs{
+
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+
+}
+
+.tabs button{
+
+    flex:1;
+    padding:10px;
+    border:none;
+    background: linear-gradient(45deg, rgb(255, 152, 0), rgb(255, 87, 34));
+    color:#fff;
+    cursor:pointer;
+    border-radius:8px;
+
+}
+
+.auth-form input{
+
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    font-size:15px;
+
+}
+
+.password-box{
+
+    position:relative;
+
+}
+
+.password-box span{
+
+    position:absolute;
+    right:15px;
+    top:22px;
+    cursor:pointer;
+    font-size:18px;
+
+}
+
+.auth-form button{
+
+    width:100%;
+    padding:12px;
+    background: linear-gradient(45deg, rgb(255, 152, 0), rgb(255, 87, 34));
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+
+}
+
+.auth-form button:hover{
+
+    background:#e54b15;
+
+}
+
+.auth-error{
+
+    color:red;
+    font-size:14px;
+    margin-top:5px;
+
+}
