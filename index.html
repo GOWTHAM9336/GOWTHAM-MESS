@@ -128,7 +128,7 @@
 
     <div class="nav-icons">
 
-        <button class="user-btn">
+         <button class="user-btn" onclick="openProfile()">
 
     <i class="fas fa-user-circle"></i>
 
@@ -596,11 +596,11 @@
 
         <div class="qty-box">
 
-            <button onclick="decreaseQtyByName('Chicken 65',120)">−</button>
+            <button onclick="decreaseQtyByName('Chicken 65 - 100gm',30)">−</button>
 
-            <span id="qty-Chicken-65">0</span>
+            <span id="qty-Chicken-65---100gm">0</span>
 
-            <button onclick="increaseQtyByName('Chicken 65',120)">+</button>
+            <button onclick="increaseQtyByName('Chicken 65 - 100gm',30)">+</button>
 
         </div>
 
@@ -1534,6 +1534,86 @@ class="order-success-popup">
     </div>
 
 </div> 
+
+
+<div id="profile-modal" class="profile-modal">
+
+    <div class="profile-box">
+
+        <button class="profile-close" onclick="closeProfile()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="profile-avatar">
+            <i class="fas fa-user-circle"></i>
+        </div>
+
+        <!-- VIEW MODE -->
+        <div id="profile-view">
+
+            <div class="profile-field">
+                <span class="profile-label">Full Name</span>
+                <span class="profile-value" id="profile-view-name">—</span>
+            </div>
+
+            <div class="profile-field">
+                <span class="profile-label">Email</span>
+                <span class="profile-value" id="profile-view-email">—</span>
+            </div>
+
+            <div class="profile-field">
+                <span class="profile-label">Phone Number</span>
+                <span class="profile-value" id="profile-view-phone">—</span>
+            </div>
+
+            <div class="profile-field">
+                <span class="profile-label">Password</span>
+                <span class="profile-value">••••••••</span>
+            </div>
+
+            <div class="profile-actions">
+                <button onclick="toggleEditProfile(true)">✏️ Edit Profile</button>
+                <button onclick="toggleChangePassword(true)">🔒 Change Password</button>
+                <button class="profile-logout" onclick="logoutUser()">Logout</button>
+            </div>
+
+        </div>
+
+        <!-- EDIT PROFILE MODE -->
+        <div id="profile-edit" style="display:none;">
+
+            <input type="text" id="edit-fullname" placeholder="Full Name">
+            <input type="email" id="edit-email" placeholder="Email">
+            <input type="tel" id="edit-phone" placeholder="Phone Number">
+
+            <div id="profile-edit-error" class="auth-error"></div>
+
+            <div class="profile-actions">
+                <button onclick="saveProfile()">Save</button>
+                <button class="profile-cancel" onclick="toggleEditProfile(false)">Cancel</button>
+            </div>
+
+        </div>
+
+        <!-- CHANGE PASSWORD MODE -->
+        <div id="profile-password" style="display:none;">
+
+            <input type="password" id="current-password" placeholder="Current Password">
+            <input type="password" id="new-password" placeholder="New Password">
+            <input type="password" id="confirm-new-password" placeholder="Confirm New Password">
+
+            <div id="profile-password-error" class="auth-error"></div>
+
+            <div class="profile-actions">
+                <button onclick="submitChangePassword()">Save Password</button>
+                <button class="profile-cancel" onclick="toggleChangePassword(false)">Cancel</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>

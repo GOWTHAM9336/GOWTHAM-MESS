@@ -1,7 +1,7 @@
 let cart = [];
 let total = 0;
 
-function addToCart(item, price){
+function addToCart(item, price, silent){
 
     cart.push({
         item,
@@ -12,7 +12,9 @@ function addToCart(item, price){
 
     updateCart();
 
-    alert(item + " added to cart");
+    if(!silent){
+        alert(item + " added to cart");
+    }
 
 }
 
@@ -25,9 +27,15 @@ function updateCart(){
 
     total = 0;
 
+    // Tracks how many of each item are currently in the cart,
+    // used below to keep the menu's qty badges in sync.
+    let counts = {};
+
     cart.forEach((item,index)=>{
 
         total += item.price;
+
+        counts[item.item] = (counts[item.item] || 0) + 1;
 
         let li =
         document.createElement("li");
@@ -71,6 +79,21 @@ function updateCart(){
     document.getElementById("total").innerText = total;
 
     document.getElementById("cart-count").innerText = cart.length;
+
+    // SYNC MENU QTY BADGES — this keeps the +/- badges on the
+    // menu cards correct no matter whether an item was added,
+    // removed, or its quantity changed from inside the cart panel.
+    document.querySelectorAll('.qty-box span[id^="qty-"]').forEach(span=>{
+
+        let name = span.id.replace("qty-", "");
+
+        let qty = counts[name] || 0;
+
+        quantities[name] = qty;
+
+        span.innerText = qty;
+
+    });
 
     // QR Amount Auto Update
     let qrBox = document.getElementById("qr-box");
@@ -163,12 +186,12 @@ function showBill(){
 
     let today = new Date();
 
-let day = String(today.getDate()).padStart(2, '0');
-let month = String(today.getMonth() + 1).padStart(2, '0');
-let year = today.getFullYear();
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
+    let year = today.getFullYear();
 
-document.getElementById("bill-date").innerText =
-`${day}/${month}/${year}`;
+    document.getElementById("bill-date").innerText =
+    `${day}/${month}/${year}`;
 
     let billItems =
     document.getElementById("bill-items");
@@ -214,29 +237,29 @@ document.getElementById("bill-date").innerText =
 
     /* PAYMENT METHOD */
 
-let paymentMethod =
-document.querySelector(
-'input[name="payment"]:checked'
-).value;
+    let paymentMethod =
+    document.querySelector(
+    'input[name="payment"]:checked'
+    ).value;
 
-let transactionId =
-document.getElementById("transaction-id").value;
+    let transactionId =
+    document.getElementById("transaction-id").value;
 
-/* CREATE PAYMENT ROW */
+    /* CREATE PAYMENT ROW */
 
-let paymentRow =
-document.createElement("tr");
+    let paymentRow =
+    document.createElement("tr");
 
-paymentRow.innerHTML = `
-<td colspan="3">
-<b>Payment:</b> ${paymentMethod}
-<br>
-<b>Transaction ID:</b>
-${transactionId || "Cash Payment"}
-</td>
-`;
+    paymentRow.innerHTML = `
+    <td colspan="3">
+    <b>Payment:</b> ${paymentMethod}
+    <br>
+    <b>Transaction ID:</b>
+    ${transactionId || "Cash Payment"}
+    </td>
+    `;
 
-billItems.appendChild(paymentRow);
+    billItems.appendChild(paymentRow);
 
     document.getElementById("bill-popup").style.display =
     "flex";
@@ -248,18 +271,26 @@ function closeBill(){
     document.getElementById("bill-popup").style.display = "none";
 
     // Show Call & WhatsApp buttons again
-    document.querySelector(".floating-icons").style.display = "flex";
+    let icons = document.querySelector(".floating-icons");
+    if(icons){
+        icons.style.display = "flex";
+    }
 }
 
 function printBill(){
 
     // Hide buttons before printing
-    document.querySelector(".floating-icons").style.display = "none";
+    let icons = document.querySelector(".floating-icons");
+    if(icons){
+        icons.style.display = "none";
+    }
 
     window.print();
 
     // Show buttons after printing
-    document.querySelector(".floating-icons").style.display = "flex";
+    if(icons){
+        icons.style.display = "flex";
+    }
 }
 
 function placeOrder(event){
@@ -283,9 +314,9 @@ function scrollMenu(){
 function sendEmail(){
 
     if (cart.length === 0) {
-    alert("Cart is Empty!");
-    return;
-}
+        alert("Cart is Empty!");
+        return;
+    }
 
     let customerName = document.getElementById("name").value;
 
@@ -313,61 +344,100 @@ function sendEmail(){
     `mailto:${email}?subject=${subject}&body=${body}`;
 
 }
-function showMenu(sectionId){
 
-    document.getElementById(sectionId).scrollIntoView({
+/* SHOW SELECTED MENU ONLY */
+function showMenu(menuId){
+
+    document.querySelectorAll(".menu-box").forEach(menu => {
+
+        menu.style.display = "none";
+
+    });
+
+    document.getElementById(menuId).style.display = "block";
+
+    document.getElementById(menuId).scrollIntoView({
+
         behavior:"smooth"
+
     });
 
 }
 
-function closeBill(){
+function showAllMenu(){
 
-    document.getElementById("bill-popup").style.display =
-    "none";
+    document.querySelectorAll('.menu-category')
+    .forEach(menu=>{
+        menu.style.display='block';
+    });
 
+    document.getElementById('menu').scrollIntoView({
+        behavior:'smooth'
+    });
 }
-
-/* LOGIN SYSTEM */
-
-
-
-
 
 /* LOGOUT FUNCTION */
 
 function logoutUser(){
 
-    localStorage.removeItem("gowthamUser");
+    localStorage.removeItem("isLoggedIn");
 
-    localStorage.removeItem("gowthamPass");
-    document.getElementById("floating-icons")
-.style.display = "none";
+    let icons = document.getElementById("floating-icons");
+    if(icons){
+        icons.style.display = "none";
+    }
 
-    alert("Logged Out");
+    alert("Logged Out Successfully");
 
     location.reload();
 
 }
 
-/* SHOW QR */
+/* SHOW QR (toggle) */
 
-function showQR(){
+function showQR() {
 
-    document.getElementById("qr-box")
-    .style.display = "block";
+    let qrBox = document.getElementById("qr-box");
 
-    document.getElementById("qr-amount")
-    .innerText = total;
+    // Toggle QR Show/Hide
+    if (qrBox.style.display === "block") {
 
+        qrBox.style.display = "none";
+        return;
+
+    }
+
+    qrBox.style.display = "block";
+
+    // Show cart total
+    document.getElementById("qr-amount").innerText = total;
+
+    // Clear old QR
+    document.getElementById("qrcode").innerHTML = "";
+
+    // Your UPI ID
+    let upiLink =
+    `upi://pay?pa=9080149926@paytm&pn=GOWTHAM MESS&am=${total}&cu=INR`;
+
+    // Generate QR
+    new QRCode(
+        document.getElementById("qrcode"),
+        {
+            text: upiLink,
+            width: 250,
+            height: 250
+        }
+    );
 }
 
-/* PAYMENT SUCCESS */
+/* PAYMENT SUCCESS (legacy popup, kept for compatibility) */
 
 function paymentSuccess(){
 
-    document.getElementById("payment-popup")
-    .style.display = "flex";
+    let popup = document.getElementById("payment-popup");
+    if(popup){
+        popup.style.display = "flex";
+    }
 
 }
 
@@ -375,28 +445,170 @@ function paymentSuccess(){
 
 function closePaymentPopup(){
 
-    document.getElementById("payment-popup")
-    .style.display = "none";
+    let popup = document.getElementById("payment-popup");
+    if(popup){
+        popup.style.display = "none";
+    }
+
+}
+
+/* ==================== PAYMENT GATING ====================
+
+   The order can only be confirmed once the selected payment
+   method has actually been completed:
+
+   - Cash        -> always considered "paid" (pay on delivery)
+   - Online(Card)-> paid only after Razorpay reports success
+   - UPI / QR    -> paid only once a Transaction ID is entered
+*/
+
+let paymentCompleted = true; // Cash is selected by default
+
+function initPaymentListeners(){
+
+    document.querySelectorAll('input[name="payment"]').forEach(radio => {
+
+        radio.addEventListener('change', function(){
+
+            if(this.value === "Cash"){
+                paymentCompleted = true;
+            } else {
+                paymentCompleted = false;
+            }
+
+        });
+
+    });
+
+    let txnInput = document.getElementById("transaction-id");
+
+    if(txnInput){
+
+        txnInput.addEventListener('input', function(){
+
+            let upiSelected =
+            document.querySelector('input[name="payment"]:checked');
+
+            if(upiSelected && upiSelected.value === "UPI"){
+
+                paymentCompleted = this.value.trim() !== "";
+
+            }
+
+        });
+
+    }
 
 }
 
 /* CONFIRM ORDER */
 
-function confirmOrder(){
+function confirmOrder() {
 
-    
+    if (cart.length === 0) {
+        alert("🛒 Cart is Empty! Please add items.");
+        return;
+    }
 
-    let username =
-    localStorage.getItem("gowthamUser")
-    || "Customer";
+    if(!paymentCompleted){
 
-    document.getElementById("success-user")
-    .innerText =
-    `Thank You ${username}`;
+        let payment =
+        document.querySelector('input[name="payment"]:checked');
 
-    document.getElementById(
-        "order-success-popup"
-    ).style.display = "flex";
+        let method = payment ? payment.value : "Cash";
+
+        if(method === "Online"){
+            alert("💳 Please complete the card payment before confirming your order.");
+        } else if(method === "UPI"){
+            alert("📱 Please complete the UPI payment and enter the Transaction ID before confirming your order.");
+        } else {
+            alert("Please complete the payment before confirming your order.");
+        }
+
+        return;
+    }
+
+    let customerName =
+    document.getElementById("name").value;
+
+    let phone =
+    document.getElementById("phone").value;
+
+    let email =
+    document.getElementById("user_email").value;
+
+    let address =
+    document.getElementById("address").value;
+
+    if (
+        customerName === "" ||
+        phone === "" ||
+        email === "" ||
+        address === ""
+    ) {
+        alert("🚚 Delivery Details are mandatory. Please fill all details.");
+        return;
+    }
+
+    let orderTime =
+    new Date().toLocaleString("en-IN", {
+        dateStyle: "short",
+        timeStyle: "medium"
+    });
+
+    let payment =
+    document.querySelector(
+        'input[name="payment"]:checked'
+    );
+
+    let paymentMethod =
+    payment ? payment.value : "Cash";
+
+    let paymentStatus = "Paid ✅";
+
+    let orderItems = "";
+
+    cart.forEach(item => {
+        orderItems +=
+        `${item.item} - ₹${item.price}\n`;
+    });
+
+    emailjs.send(
+        "gowtham_mess",
+        "template_y0au8ao",
+        {
+            name: customerName,
+            phone: phone,
+            email: email,
+            address: address,
+            time: orderTime,
+            payment_method: paymentMethod,
+            payment_status: paymentStatus,
+            items: orderItems,
+            total: total
+        }
+    )
+
+    .then(function(response){
+
+        document.getElementById(
+            "success-user"
+        ).innerText =
+        `Thank You ${customerName}`;
+
+        document.getElementById(
+            "order-success-popup"
+        ).style.display = "flex";
+
+    })
+
+    .catch(function(error){
+
+        console.log(error);
+
+        alert("Email Failed");
+
+    });
 
 }
 
@@ -455,9 +667,26 @@ function closeSuccessPopup(){
 
     document.getElementById("address").value = "";
 
+    /* RESET PAYMENT STATE FOR NEXT CUSTOMER */
+
+    resetPaymentState();
+
     /* READY FOR NEXT CUSTOMER */
 
     alert("Ready For New Order 🍴");
+
+}
+
+function resetPaymentState(){
+
+    let cashRadio =
+    document.querySelector('input[name="payment"][value="Cash"]');
+
+    if(cashRadio){
+        cashRadio.checked = true;
+    }
+
+    paymentCompleted = true;
 
 }
 
@@ -531,55 +760,51 @@ function payWithPhonepe(){
     `phonepe://pay?pa=9080149926@ybl&pn=GowthamMess&am=${total}&cu=INR`;
 }
 
-function showMenu(category){
+function generateOrderNumber() {
 
-    const menus = document.querySelectorAll('.menu-category');
+    const today = new Date().toISOString().split("T")[0];
 
-    menus.forEach(menu=>{
-        menu.style.display='none';
-    });
+    let savedDate = localStorage.getItem("orderDate");
+    let orderNo = parseInt(localStorage.getItem("orderNo")) || 0;
 
-    document.getElementById(category).style.display='block';
+    if (savedDate !== today) {
+        orderNo = 0;
+        localStorage.setItem("orderDate", today);
+    }
 
-    document.getElementById(category).scrollIntoView({
-        behavior:'smooth'
-    });
+    orderNo++;
+
+    localStorage.setItem("orderNo", orderNo);
+
+    return String(orderNo).padStart(3, "0");
 }
 
-function showAllMenu(){
+// Holds the live per-item count shown on each menu card's qty badge.
+// updateCart() is the single source of truth for this — it recalculates
+// every value straight from the cart array, so it can never drift out
+// of sync with what's actually in the cart.
+let quantities = {};
 
-    document.querySelectorAll('.menu-category')
-    .forEach(menu=>{
-        menu.style.display='block';
-    });
+function increaseQtyByName(name, price){
 
-    document.getElementById('menu').scrollIntoView({
-        behavior:'smooth'
-    });
-}
-
-
-
-
-// Show selected menu only
-function showMenu(menuId){
-
-    document.querySelectorAll(".menu-box").forEach(menu => {
-
-        menu.style.display = "none";
-
-    });
-
-    document.getElementById(menuId).style.display = "block";
-
-    document.getElementById(menuId).scrollIntoView({
-
-        behavior:"smooth"
-
-    });
+    // silent=true: no need for a popup every time someone taps "+"
+    addToCart(name, price, true);
 
 }
 
+function decreaseQtyByName(name, price){
+
+    let index = cart.findIndex(item => item.item === name);
+
+    if(index === -1){
+        return;
+    }
+
+    cart.splice(index,1);
+
+    updateCart();
+
+}
 
 function toggleOrderMenu(){
 
@@ -731,138 +956,12 @@ function startTracking(){
 
 }
 
-function confirmOrder() {
-
-    if (cart.length === 0) {
-    alert("🛒 Cart is Empty! Please add items.");
-    return;
-}
-
-    let customerName =
-    document.getElementById("name").value;
-
-    let phone =
-    document.getElementById("phone").value;
-
-    let email =
-    document.getElementById("user_email").value;
-
-    let address =
-    document.getElementById("address").value;
-
-    if (
-    customerName === "" ||
-    phone === "" ||
-    email === "" ||
-    address === ""
-) {
-    alert("🚚 Delivery Details are mandatory. Please fill all details.");
-    return;
-}
-
-    let orderTime =
-    new Date().toLocaleString("en-IN", {
-        dateStyle: "short",
-        timeStyle: "medium"
-    });
-
-    let payment =
-    document.querySelector(
-        'input[name="payment"]:checked'
-    );
-
-    let paymentMethod =
-    payment ? payment.value : "Cash";
-
-    let paymentStatus = "Paid ✅";
-
-    let orderItems = "";
-
-    cart.forEach(item => {
-        orderItems +=
-        `${item.item} - ₹${item.price}\n`;
-    });
-
-    emailjs.send(
-        "gowtham_mess",
-        "template_y0au8ao",
-        {
-            name: customerName,
-            phone: phone,
-            email: email,
-            address: address,
-            time: orderTime,
-            payment_method: paymentMethod,
-            payment_status: paymentStatus,
-            items: orderItems,
-            total: total
-        }
-    )
-
-    .then(function(response){
-
-        alert("Order Sent Successfully!");
-
-        document.getElementById(
-            "success-user"
-        ).innerText =
-        `Thank You ${customerName}`;
-
-        document.getElementById(
-            "order-success-popup"
-        ).style.display = "flex";
-
-    })
-
-    .catch(function(error){
-
-        console.log(error);
-
-        alert("Email Failed");
-
-    });
-
-}
-function showQR() {
-
-    let qrBox = document.getElementById("qr-box");
-
-    // Toggle QR Show/Hide
-    if (qrBox.style.display === "block") {
-
-        qrBox.style.display = "none";
-        return;
-
-    }
-
-    qrBox.style.display = "block";
-
-    // Show cart total
-    document.getElementById("qr-amount").innerText = total;
-
-    // Clear old QR
-    document.getElementById("qrcode").innerHTML = "";
-
-    // Your UPI ID
-    let upiLink =
-    `upi://pay?pa=9080149926@paytm&pn=GOWTHAM MESS&am=${total}&cu=INR`;
-
-    // Generate QR
-    new QRCode(
-        document.getElementById("qrcode"),
-        {
-            text: upiLink,
-            width: 250,
-            height: 250
-        }
-    );
-}
-
 function payNow(){
 
     if(total <= 0){
 
         alert("🛒 Please add items to cart first");
+        paymentCompleted = false;
         return;
     }
 
@@ -892,10 +991,26 @@ function payNow(){
                 tx.value = paymentId;
             }
 
+            paymentCompleted = true;
+
             alert(
                 "✅ Payment Successful\n\nTransaction ID:\n" +
                 paymentId
             );
+
+            // Automatically move on to order confirmation
+            confirmOrder();
+
+        },
+
+        modal: {
+
+            ondismiss: function(){
+
+                // Popup closed without paying
+                paymentCompleted = false;
+
+            }
 
         },
 
@@ -908,8 +1023,8 @@ function payNow(){
             document.getElementById("phone").value,
 
             email:
-            document.getElementById("email") ?
-            document.getElementById("email").value :
+            document.getElementById("user_email") ?
+            document.getElementById("user_email").value :
             ""
 
         },
@@ -927,62 +1042,6 @@ function payNow(){
 
 }
 
-function generateOrderNumber() {
-
-    const today = new Date().toISOString().split("T")[0];
-
-    let savedDate = localStorage.getItem("orderDate");
-    let orderNo = parseInt(localStorage.getItem("orderNo")) || 0;
-
-    if (savedDate !== today) {
-        orderNo = 0;
-        localStorage.setItem("orderDate", today);
-    }
-
-    orderNo++;
-
-    localStorage.setItem("orderNo", orderNo);
-
-    return String(orderNo).padStart(3, "0");
-}
-
-let quantities = {};
-
-function increaseQtyByName(name, price){
-
-    if(!quantities[name]){
-        quantities[name] = 0;
-    }
-
-    quantities[name]++;
-
-    addToCart(name, price);
-
-    document.getElementById("qty-"+name).innerText =
-    quantities[name];
-}
-
-function decreaseQtyByName(name, price){
-
-    if(!quantities[name] || quantities[name] <= 0){
-        return;
-    }
-
-    quantities[name]--;
-
-    let index = cart.findIndex(item => item.item === name);
-
-    if(index !== -1){
-
-        cart.splice(index,1);
-
-        updateCart();
-
-    }
-
-    document.getElementById("qty-"+name).innerText =
-    quantities[name];
-}
 /* ---------------- LOGIN TAB ---------------- */
 
 function showLogin(){
@@ -1050,7 +1109,7 @@ function signupUser(){
         return;
     }
 
-    // Save account
+    // Save account (Full Name is also used as the display / user name)
     localStorage.setItem("fullname", name);
     localStorage.setItem("email", email);
     localStorage.setItem("phone", phone);
@@ -1073,11 +1132,12 @@ function signupUser(){
     // Open Login Form
     showLogin();
 }
+
 /* ---------------- LOGIN ---------------- */
 
 function loginUser(){
 
-    let email =
+    let identifier =
     document.getElementById("login-identifier").value.trim();
 
     let password =
@@ -1085,7 +1145,8 @@ function loginUser(){
 
     if(
 
-        email===localStorage.getItem("email") &&
+        (identifier===localStorage.getItem("email") ||
+         identifier===localStorage.getItem("fullname")) &&
         password===localStorage.getItem("password")
 
     ){
@@ -1123,27 +1184,17 @@ function loginUser(){
     else{
 
         document.getElementById("login-error").innerHTML =
-        "Invalid Email or Password.";
+        "Invalid Email/Username or Password.";
 
     }
-
-}
-
-/* ---------------- LOGOUT ---------------- */
-
-function logoutUser(){
-
-    localStorage.removeItem("isLoggedIn");
-
-    alert("Logged Out Successfully");
-
-    location.reload();
 
 }
 
 /* ---------------- AUTO LOGIN ---------------- */
 
 window.onload = function(){
+
+    initPaymentListeners();
 
     if(localStorage.getItem("isLoggedIn")==="true"){
 
@@ -1192,3 +1243,157 @@ window.onload = function(){
 
 };
 
+/* ==================== PROFILE ==================== */
+
+function openProfile(){
+
+    if(localStorage.getItem("isLoggedIn") !== "true"){
+
+        let popup = document.getElementById("login-popup");
+
+        if(popup){
+            popup.style.display = "flex";
+        }
+
+        return;
+    }
+
+    document.getElementById("profile-view-name").innerText =
+    localStorage.getItem("fullname") || "-";
+
+    document.getElementById("profile-view-email").innerText =
+    localStorage.getItem("email") || "-";
+
+    document.getElementById("profile-view-phone").innerText =
+    localStorage.getItem("phone") || "-";
+
+    document.getElementById("profile-view").style.display = "block";
+    document.getElementById("profile-edit").style.display = "none";
+    document.getElementById("profile-password").style.display = "none";
+
+    document.getElementById("profile-modal").style.display = "flex";
+
+}
+
+function closeProfile(){
+
+    document.getElementById("profile-modal").style.display = "none";
+
+}
+
+function toggleEditProfile(show){
+
+    if(show){
+
+        document.getElementById("edit-fullname").value =
+        localStorage.getItem("fullname") || "";
+
+        document.getElementById("edit-email").value =
+        localStorage.getItem("email") || "";
+
+        document.getElementById("edit-phone").value =
+        localStorage.getItem("phone") || "";
+
+        document.getElementById("profile-edit-error").innerText = "";
+
+        document.getElementById("profile-view").style.display = "none";
+        document.getElementById("profile-edit").style.display = "block";
+
+    } else {
+
+        document.getElementById("profile-edit").style.display = "none";
+        document.getElementById("profile-view").style.display = "block";
+
+    }
+
+}
+
+function saveProfile(){
+
+    let name = document.getElementById("edit-fullname").value.trim();
+    let email = document.getElementById("edit-email").value.trim();
+    let phone = document.getElementById("edit-phone").value.trim();
+
+    if(name === "" || email === "" || phone === ""){
+
+        document.getElementById("profile-edit-error").innerText =
+        "Please fill all fields.";
+
+        return;
+    }
+
+    localStorage.setItem("fullname", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
+
+    let userNameEl = document.getElementById("user-name");
+
+    if(userNameEl){
+        userNameEl.innerText = name;
+    }
+
+    alert("Profile Updated Successfully");
+
+    toggleEditProfile(false);
+    openProfile();
+
+}
+
+function toggleChangePassword(show){
+
+    if(show){
+
+        document.getElementById("current-password").value = "";
+        document.getElementById("new-password").value = "";
+        document.getElementById("confirm-new-password").value = "";
+        document.getElementById("profile-password-error").innerText = "";
+
+        document.getElementById("profile-view").style.display = "none";
+        document.getElementById("profile-password").style.display = "block";
+
+    } else {
+
+        document.getElementById("profile-password").style.display = "none";
+        document.getElementById("profile-view").style.display = "block";
+
+    }
+
+}
+
+function submitChangePassword(){
+
+    let current = document.getElementById("current-password").value;
+    let newPass = document.getElementById("new-password").value;
+    let confirmPass = document.getElementById("confirm-new-password").value;
+
+    if(current === "" || newPass === "" || confirmPass === ""){
+
+        document.getElementById("profile-password-error").innerText =
+        "Please fill all fields.";
+
+        return;
+    }
+
+    if(current !== localStorage.getItem("password")){
+
+        document.getElementById("profile-password-error").innerText =
+        "Current password is incorrect.";
+
+        return;
+    }
+
+    if(newPass !== confirmPass){
+
+        document.getElementById("profile-password-error").innerText =
+        "New passwords do not match.";
+
+        return;
+    }
+
+    localStorage.setItem("password", newPass);
+
+    alert("Password Changed Successfully");
+
+    toggleChangePassword(false);
+
+}
